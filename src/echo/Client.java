@@ -43,17 +43,48 @@ public class Client {
 		BufferedReader br = new BufferedReader(isr);
 		
 		// 스캐너 입력
-		Scanner sc = new Scanner(System.in);
-		String str = sc.nextLine();
+		Scanner sc = new Scanner(System.in); 
+		/*
+		InputStream sc = System.in; // 스캐너도 InputStream 을 부모로 두고 있다. 스캐너대신 InputStream 으로 작성 가능.
+		InputStreamReader scIsr = new InputStreamReader(sc); // 스캐너를 대신해서 쓸때는 UTF-8을 사용하지 않는다. 스캐너의 기능이 작동되는듯?
+		BufferedReader scBr = new BufferedReader(scIsr);
+		*/
 		
-		// 메세지 보내기
-		bw.write(str);
-		bw.newLine(); // 줄바꿈을 해주지 않으면 어디까지가 한줄인지 인식하지 못함.
-		bw.flush(); // 일정량이 모이지 않아도 BufferedWriter가 값을 보낸다.
 		
-		// 메세지 받기
-		String reMsg = br.readLine();
-		System.out.println("[ server: " + reMsg + " ]" );
+		// 반복문 while 입력 - 내용을 반복해서 주고받기 위해서 작성 
+		// /q 가 입력면 종료되는 탈출조건 작성
+		while(true) {
+			String str = sc.nextLine();
+			//String str = scBr.readLine(); // 스캐너대신 InputStream sc 로 작성했을때
+
+			if ("/q".equals(str)) { // str.equals("/q") 를 작성하면 null 일때 작동을 안할수도 있다. 따라서 "/q".equals(str) 을 작성.
+				break;
+			}
+			// 메세지 보내기
+			bw.write(str);
+			bw.newLine(); // 줄바꿈을 해주지 않으면 어디까지가 한줄인지 인식하지 못함.
+			bw.flush(); // 일정량이 모이지 않아도 BufferedWriter가 값을 보낸다.
+			
+			// 메세지 받기
+			String reMsg = br.readLine();
+			System.out.println("[ server: " + reMsg + " ]" );
+		
+		}
+		
+		System.out.println("===================================");
+		System.out.println("<클라이언트 종료>");
+		
+		////////////////////////////////////////////
+		// println 만들기
+		/*
+		OutputStream pos = System.out; // System.out.println() 대신 작성하는법.
+		OutputStreamWriter posw = new OutputStreamWriter(pos); // (pos, "UTF-8") 작성시 한글이 적용안됨? UTF-8 대신 (pos) 만 작성
+		BufferedWriter pbw = new BufferedWriter(posw);
+		
+		pbw.write("pritnln 테스트");
+		pbw.newLine();
+		pbw.flush();
+		*/
 		
 		//닫기 
 		sc.close();
